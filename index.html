@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>Тест: ИИ в изучении иностранных языков</title>
+  <style>
+    :root{--bg:#0b1220;--panel:#121d30;--panel2:#18263d;--text:#f3f6fc;--muted:#9eacc2;--accent:#8b7cff;--accent2:#54d6b2;--danger:#ff7b88}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 5%,#26345d 0,transparent 35%),radial-gradient(circle at 90% 90%,#153f45 0,transparent 32%),var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px 16px}
+    .wrap{width:min(760px,100%)} .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;color:var(--muted);font-size:13px;gap:12px}
+    .brand{font-weight:800;letter-spacing:.08em;color:#c7c1ff}.card{background:linear-gradient(145deg,rgba(24,38,61,.97),rgba(16,27,44,.97));border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:clamp(22px,5vw,42px);box-shadow:0 24px 80px #0006}
+    .eyebrow{color:var(--accent2);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    h1{font-size:clamp(27px,5vw,42px);line-height:1.12;margin:12px 0 14px} p{color:var(--muted);line-height:1.65}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.pill{background:#ffffff0d;border:1px solid #ffffff12;padding:9px 13px;border-radius:99px;font-size:13px;color:#c8d2e3}
+    label{display:block;font-size:14px;font-weight:650;margin:20px 0 8px} input{width:100%;padding:15px 16px;border-radius:12px;border:1px solid #34445e;background:#0d1728;color:white;font:inherit;outline:none}input:focus{border-color:var(--accent)}
+    button{border:0;border-radius:12px;padding:14px 20px;font:inherit;font-weight:750;cursor:pointer;transition:.2s}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,#8b7cff,#6b9cff);color:white}.secondary{background:#ffffff12;color:#e9eef8;border:1px solid #ffffff18}.primary:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}
+    .actions{display:flex;justify-content:space-between;gap:12px;margin-top:26px}.actions button{min-width:130px}
+    .progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:10px}.track{height:7px;background:#ffffff12;border-radius:99px;overflow:hidden;margin-bottom:28px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s}
+    .question{font-size:clamp(20px,3vw,25px);line-height:1.35;margin:0 0 22px}.option{display:flex;gap:13px;align-items:flex-start;padding:15px;border:1px solid #ffffff18;background:#ffffff08;border-radius:13px;margin:10px 0;cursor:pointer;transition:.15s}.option:hover{border-color:#8b7cff88;background:#8b7cff12}.option.selected{border-color:var(--accent);background:#8b7cff20}.letter{width:27px;height:27px;flex:none;border-radius:8px;background:#ffffff12;display:grid;place-items:center;font-size:13px;font-weight:800;color:#c8c2ff}.option.selected .letter{background:var(--accent);color:white}.option span:last-child{line-height:1.45}
+    .hidden{display:none!important}.notice{font-size:13px;color:var(--muted);margin-top:16px}.result{text-align:center}.score{font-size:64px;font-weight:900;letter-spacing:-.06em;margin:12px 0;color:var(--accent2)}.result h2{font-size:28px;margin:10px 0}.status{margin:20px auto;padding:14px;border-radius:12px;background:#ffffff0a;max-width:440px}.error{color:var(--danger)}.success{color:var(--accent2)}
+    footer{text-align:center;color:#73839d;font-size:12px;margin-top:18px}
+    @media(max-width:480px){.top{align-items:flex-start;flex-direction:column}.actions button{min-width:0;flex:1}.card{border-radius:18px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><div class="brand">LANGUAGE × AI</div><div>Учебный тест · 10 вопросов</div></div>
+  <section class="card" id="intro">
+    <div class="eyebrow">Проверь свои знания</div>
+    <h1>Искусственный интеллект в изучении иностранных языков</h1>
+    <p>Ответь на 10 вопросов о том, как ИИ помогает учить лексику, грамматику, произношение и развивать навыки общения. На каждый вопрос можно выбрать только один вариант.</p>
+    <div class="meta"><span class="pill">10 вопросов</span><span class="pill">1 балл за ответ</span><span class="pill">Около 5 минут</span></div>
+    <label for="studentName">Имя и фамилия</label>
+    <input id="studentName" maxlength="80" autocomplete="name" placeholder="Например, Иван Иванов">
+    <div class="actions"><span></span><button class="primary" id="startBtn">Начать тест →</button></div>
+    <div class="notice">Автор материала: Григорьев Артём</div>
+  </section>
+
+  <section class="card hidden" id="quiz">
+    <div class="progress-row"><span id="counter">Вопрос 1 из 10</span><span id="percent">10%</span></div>
+    <div class="track"><div class="bar" id="bar"></div></div>
+    <div class="eyebrow" id="topic">Основы ИИ</div>
+    <h2 class="question" id="question"></h2>
+    <div id="options"></div>
+    <div class="actions"><button class="secondary" id="backBtn">← Назад</button><button class="primary" id="nextBtn" disabled>Далее →</button></div>
+    <div class="notice">Выбери один ответ, затем нажми «Далее».</div>
+  </section>
+
+  <section class="card result hidden" id="result">
+    <div class="eyebrow">Тест завершён</div>
+    <h2 id="resultTitle">Твой результат</h2>
+    <div class="score" id="score">0/10</div>
+    <p id="feedback"></p>
+    <div class="status" id="saveStatus">Отправляем результат в таблицу…</div>
+    <button class="primary" onclick="location.reload()">Пройти ещё раз</button>
+  </section>
+  <footer>Тест по теме «Использование ИИ в изучении иностранных языков»</footer>
+</main>
+<script>
+  // Вставьте URL веб-приложения Google Apps Script после публикации.
+  const GOOGLE_SCRIPT_URL = https://script.google.com/macros/s/AKfycbwX_NsNOp58qFAIx4xXLU_4433JRHInjcHPfAH3x3Vy-r1GgKijGol480kdarKJTl5E/exec;
+
+  const questions = [
+    {topic:"Основы ИИ",q:"Что такое искусственный интеллект (ИИ) в контексте изучения иностранных языков?",a:["Программа, которая может выполнять задачи, обычно требующие человеческого интеллекта","Обычный электронный словарь без дополнительных функций","Только устройство для перевода текста","Метод изучения языка исключительно по видео"],c:0},
+    {topic:"Перевод и понимание",q:"Как ИИ-переводчик полезнее всего применять при изучении языка?",a:["Переводить всё подряд, не читая оригинал","Сравнивать перевод с оригиналом и разбирать незнакомые выражения","Полностью отказаться от изучения грамматики","Использовать только один и тот же готовый перевод"],c:1},
+    {topic:"Лексика",q:"Как ИИ может помочь запоминать новые слова?",a:["Скрывать значения слов","Составлять карточки, примеры и упражнения с повторением","Заменять все слова картинками без объяснений","Удалять слова после первого просмотра"],c:1},
+    {topic:"Грамматика",q:"Что лучше попросить у ИИ, если ты не понимаешь грамматическое правило?",a:["Дать только правильный ответ без объяснения","Объяснить правило простыми словами и привести несколько примеров","Перевести случайный текст","Не исправлять ошибки"],c:1},
+    {topic:"Разговорная практика",q:"Как использовать чат-бот с ИИ для развития разговорных навыков?",a:["Попросить его разыграть диалог на изучаемом языке","Попросить отвечать только на родном языке","Использовать его исключительно как калькулятор","Не отвечать на его вопросы"],c:0},
+    {topic:"Произношение",q:"Какая функция ИИ особенно полезна для тренировки произношения?",a:["Проверка орфографии в документе","Распознавание речи и обратная связь по произнесённым словам","Изменение яркости экрана","Автоматическое форматирование таблиц"],c:1},
+    {topic:"Персонализация",q:"В чём преимущество персонализированных заданий, созданных ИИ?",a:["Они всегда одинаковы для всех","Они могут учитывать уровень, цели и ошибки учащегося","Они не требуют участия ученика","Они гарантируют свободное владение языком за один день"],c:1},
+    {topic:"Критическое мышление",q:"Почему ответы ИИ важно проверять по надёжным источникам?",a:["ИИ никогда не умеет объяснять","ИИ иногда может ошибаться или уверенно выдавать неточную информацию","Проверка мешает обучению","Все ответы ИИ являются случайными"],c:1},
+    {topic:"Эффективный запрос",q:"Какой запрос к ИИ лучше поможет выучить английские слова уровня A2 по теме «Путешествия»?",a:["«Помоги»","«Напиши что-нибудь»","«Составь 10 слов уровня A2 по теме путешествий с переводом и примерами предложений»","«Переведи интернет»"],c:2},
+    {topic:"Ответственное использование",q:"Как правильнее всего использовать ИИ в обучении иностранному языку?",a:["Сдавать все задания, не пытаясь разобраться","Полностью полагаться на ответы ИИ","Использовать ИИ как помощника, самостоятельно практиковаться и проверять важные ответы","Перестать общаться с преподавателем и другими людьми"],c:2}
+  ];
+
+  let current = 0;
+  let answers = Array(questions.length).fill(null);
+  let student = "";
+  const $ = id => document.getElementById(id);
+
+  $("startBtn").addEventListener("click", () => {
+    student = $("studentName").value.trim();
+    if (!student) { $("studentName").focus(); $("studentName").style.borderColor="var(--danger)"; return; }
+    $("intro").classList.add("hidden"); $("quiz").classList.remove("hidden"); render();
+  });
+  $("studentName").addEventListener("input", () => $("studentName").style.borderColor="");
+
+  function render(){
+    const item = questions[current];
+    $("counter").textContent = `Вопрос ${current+1} из ${questions.length}`;
+    $("percent").textContent = `${Math.round((current+1)/questions.length*100)}%`;
+    $("bar").style.width = `${(current+1)/questions.length*100}%`;
+    $("topic").textContent = item.topic;
+    $("question").textContent = item.q;
+    $("options").innerHTML = "";
+    item.a.forEach((answer,i)=>{
+      const el=document.createElement("div");
+      el.className="option"+(answers[current]===i?" selected":"");
+      el.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span><span></span>`;
+      el.querySelector("span:last-child").textContent=answer;
+      el.addEventListener("click",()=>{answers[current]=i;renderOptions();});
+      $("options").appendChild(el);
+    });
+    $("backBtn").disabled=current===0;
+    $("nextBtn").disabled=answers[current]===null;
+    $("nextBtn").textContent=current===questions.length-1?"Завершить тест ✓":"Далее →";
+  }
+  function renderOptions(){
+    [...$("options").children].forEach((el,i)=>el.classList.toggle("selected",answers[current]===i));
+    $("nextBtn").disabled=answers[current]===null;
+  }
+  $("backBtn").addEventListener("click",()=>{if(current>0){current--;render();}});
+  $("nextBtn").addEventListener("click",()=>{if(answers[current]===null)return;if(current<questions.length-1){current++;render();}else finish();});
+
+  async function finish(){
+    const correct=answers.reduce((sum,a,i)=>sum+(a===questions[i].c?1:0),0);
+    const percent=Math.round(correct/questions.length*100);
+    $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+    $("score").textContent=`${correct}/10`;
+    $("feedback").textContent=percent>=90?"Отличный результат! Ты хорошо разобрался в теме.":percent>=70?"Хорошая работа! Основные принципы усвоены.":percent>=50?"Неплохо. Повтори материал и попробуй ещё раз.":"Есть над чем поработать — повтори тему и пройди тест снова.";
+    const payload={name:student,score:correct,total:10,percent,answers:answers.map((a,i)=>({question:i+1,selected:a===null?"":String.fromCharCode(65+a),correct:String.fromCharCode(65+questions[i].c)}))};
+    if(!GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/")){
+      $("saveStatus").textContent="Тест пройден. Для сохранения подключите Google Apps Script: см. инструкцию в README.txt.";
+      $("saveStatus").classList.add("error"); return;
+    }
+    try{
+      await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+      $("saveStatus").textContent="Результат отправлен. Проверьте Google-таблицу.";
+      $("saveStatus").classList.add("success");
+    }catch(e){
+      $("saveStatus").textContent="Не удалось отправить результат. Проверьте подключение к интернету и настройки Apps Script.";
+      $("saveStatus").classList.add("error");
+    }
+  }
+</script>
+</body>
+</html>
